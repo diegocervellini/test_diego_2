@@ -53,7 +53,11 @@
   "dependencies": {
     "antd": "^4.6.6",
     "cropperjs": "^1.5.9",
+    "draft-js": "^0.11.4",
+    "draftjs-to-html": "^0.9.1",
+    "html-to-draftjs": "^1.5.0",
     "react-color": "^2.18.0",
+    "react-draft-wysiwyg": "^1.14.4",
     "react-image-file-resizer": "^0.3.8",
     "uuid": "^3.4.0"
   }

@@ -7,6 +7,10 @@ var antd = require('antd');
 var uuidV4 = _interopDefault(require('uuid/v4'));
 var Resizer = _interopDefault(require('react-image-file-resizer'));
 var Cropper = _interopDefault(require('cropperjs'));
+var reactDraftWysiwyg = require('react-draft-wysiwyg');
+var draftJs = require('draft-js');
+var draftToHtml = _interopDefault(require('draftjs-to-html'));
+var htmlToDraft = _interopDefault(require('html-to-draftjs'));
 
 function _inheritsLoose(subClass, superClass) {
   subClass.prototype = Object.create(superClass.prototype);
@@ -6640,6 +6644,238 @@ var CropImage = /*#__PURE__*/function (_Component) {
   return CropImage;
 }(React.Component);
 
+var Text = antd.Typography.Text;
+
+var _ = require('lodash');
+
+var MainTextEditor = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(MainTextEditor, _Component);
+
+  function MainTextEditor(props) {
+    var _this;
+
+    _this = _Component.call(this, props) || this;
+
+    _this.uploadImageCallBack = function (file) {
+    };
+
+    _this.clearText = function (text) {
+      var rx = /(<img.*float:.*\/>*)/g;
+      var str = text;
+
+      String.prototype.insert = function (index, string) {
+        if (index > 0) return this.substring(0, index + 1) + string + this.substring(index + 1, this.length);else return string + this;
+      };
+
+      var match;
+      var str2 = "";
+
+      while (match = rx.exec(str)) {
+        var str2 = str.insert(rx.lastIndex - 1, '<div style="clear: both;"></div>');
+      }
+
+      if (str2 == "") {
+        return str;
+      } else {
+        return str2;
+      }
+    };
+
+    _this._getLengthOfSelectedText = function () {
+      var currentSelection = _this.state.defaultState.getSelection();
+
+      var isCollapsed = currentSelection.isCollapsed();
+      var length = 0;
+
+      if (!isCollapsed) {
+        var currentContent = _this.state.defaultState.getCurrentContent();
+
+        var startKey = currentSelection.getStartKey();
+        var endKey = currentSelection.getEndKey();
+        var startBlock = currentContent.getBlockForKey(startKey);
+        var isStartAndEndBlockAreTheSame = startKey === endKey;
+        var startBlockTextLength = startBlock.getLength();
+        var startSelectedTextLength = startBlockTextLength - currentSelection.getStartOffset();
+        var endSelectedTextLength = currentSelection.getEndOffset();
+        var keyAfterEnd = currentContent.getKeyAfter(endKey);
+        console.log(currentSelection);
+
+        if (isStartAndEndBlockAreTheSame) {
+          length += currentSelection.getEndOffset() - currentSelection.getStartOffset();
+        } else {
+          var currentKey = startKey;
+
+          while (currentKey && currentKey !== keyAfterEnd) {
+            if (currentKey === startKey) {
+              length += startSelectedTextLength + 1;
+            } else if (currentKey === endKey) {
+              length += endSelectedTextLength;
+            } else {
+              length += currentContent.getBlockForKey(currentKey).getLength() + 1;
+            }
+
+            currentKey = currentContent.getKeyAfter(currentKey);
+          }
+        }
+      }
+
+      return length;
+    };
+
+    _this.state = {
+      lang: null,
+      defaultState: draftJs.EditorState.createEmpty(),
+      error_message: _this.props.error_message,
+      MAX_LENGTH: _this.props.maxLengthData ? _this.props.maxLengthData : 1000000000000
+    };
+    _this.parseData = _this.parseData.bind(_assertThisInitialized(_this));
+    _this.onEditorStateChange = _this.onEditorStateChange.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  var _proto = MainTextEditor.prototype;
+
+  _proto.componentDidMount = function componentDidMount() {
+    try {
+      var data = this.props.data;
+      var lang = this.props.lang;
+      this.parseData(data, lang);
+    } catch (e) {
+      console.warn("Error in TextEditor component; " + e);
+    }
+  };
+
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    var curr_lang = this.state.lang;
+    var next_lang = nextProps.lang;
+
+    if (next_lang != null && curr_lang != next_lang) {
+      this.parseData(this.props.data, nextProps.lang);
+    }
+
+    if (nextProps.data != this.state.data) {
+      this.parseData(nextProps.data, this.props.lang);
+    }
+
+    if (nextProps.error_message != this.state.error_message) {
+      this.setState({
+        error_message: nextProps.error_message
+      });
+    }
+  };
+
+  _proto.parseData = function parseData(data, lang) {
+    if (data != null) {
+      var tmp = htmlToDraft(data);
+      tmp = draftJs.ContentState.createFromBlockArray(tmp);
+      tmp = draftJs.EditorState.createWithContent(tmp);
+      this.setState({
+        lang: lang,
+        data: data,
+        defaultState: draftJs.EditorState.moveFocusToEnd(tmp)
+      });
+    } else {
+      this.setState({
+        lang: lang
+      });
+    }
+  };
+
+  _proto.onEditorStateChange = function onEditorStateChange(editorState) {
+    var _this2 = this;
+
+    var editorValue = draftToHtml(draftJs.convertToRaw(editorState.getCurrentContent()));
+    var new_text = this.clearText(editorValue);
+    this.setState({
+      data: new_text,
+      defaultState: editorState
+    }, function () {
+      _this2.props.onChange(new_text);
+    });
+  };
+
+  _proto.render = function render() {
+    var readOnly = this.props.readOnly || this.props.disabled;
+    var borderColor = this.state.error_message == null || this.state.error_message == "" ? "#d9d9d9" : "#ff4d4f";
+    var toolbarStyle = {
+      borderTopColor: "white",
+      borderRightColor: "white",
+      borderLeftColor: "white",
+      borderBottomColor: "#d9d9d9"
+    };
+    var wrapperStyle = {
+      border: "1px solid",
+      borderColor: borderColor
+    };
+
+    if (readOnly == true) {
+      wrapperStyle = {
+        border: "1px solid",
+        borderColor: borderColor,
+        color: "rgba(0, 0, 0, 0.25)",
+        backgroundColor: "#f5f5f5",
+        cursor: "not-allowed",
+        opacity: "1"
+      };
+    }
+
+    var onChangeCallback = this.props.onChange;
+    return /*#__PURE__*/React__default.createElement("div", null, onChangeCallback == null && /*#__PURE__*/React__default.createElement("div", null, "Missing 'onChange' props containing callback function."), onChangeCallback != null && /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement(antd.Row, null, /*#__PURE__*/React__default.createElement(antd.Col, {
+      sm: 24
+    }, /*#__PURE__*/React__default.createElement(reactDraftWysiwyg.Editor, {
+      readOnly: readOnly,
+      toolbarHidden: readOnly,
+      toolbarStyle: toolbarStyle,
+      wrapperStyle: wrapperStyle,
+      wrapperClassName: "demo-wrapper",
+      editorClassName: "demo-editor",
+      localization: {
+        locale: this.state.lang
+      },
+      toolbar: {
+        options: ["inline", "blockType", "fontSize", "list", "textAlign", "link", "image", "remove", "history"],
+        inline: {
+          inDropdown: true
+        },
+        list: {
+          inDropdown: true
+        },
+        textAlign: {
+          inDropdown: true
+        },
+        link: {
+          inDropdown: true
+        },
+        history: {
+          inDropdown: true
+        },
+        image: {
+          uploadCallback: this.uploadImageCallBack,
+          previewImage: true,
+          inputAccept: "image/gif,image/jpeg,image/jpg,image/png,image/svg",
+          alt: {
+            present: true,
+            mandatory: false
+          },
+          defaultSize: {
+            width: "100%",
+            height: "100%"
+          }
+        }
+      },
+      editorState: this.state.defaultState,
+      onEditorStateChange: this.onEditorStateChange
+    }))), /*#__PURE__*/React__default.createElement(antd.Row, null, /*#__PURE__*/React__default.createElement(antd.Col, {
+      span: 24
+    }, /*#__PURE__*/React__default.createElement(Text, {
+      type: "danger"
+    }, this.state.error_message)))));
+  };
+
+  return MainTextEditor;
+}(React.Component);
+
 exports.ColorPicker = ColorPicker;
 exports.CropImage = CropImage;
+exports.TextEditor = MainTextEditor;
 //# sourceMappingURL=index.js.map

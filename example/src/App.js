@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col } from "antd";
-import { ColorPicker, CropImage } from 'test_diego_2'
+import { ColorPicker, CropImage, TextEditor } from 'test_diego_2'
 import 'test_diego_2/dist/index.css'
 
 const App = () => {
@@ -19,6 +19,14 @@ const App = () => {
           <div>CropImage</div>
           <div>
             <CropImage onSave={() => { }} onClose={() => { }}></CropImage>
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <div>TextEditor</div>
+          <div>
+            <TextEditor></TextEditor>
           </div>
         </Col>
       </Row>
