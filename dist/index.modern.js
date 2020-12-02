@@ -6972,7 +6972,8 @@ var UploadImage = /*#__PURE__*/function (_Component) {
 
   _proto.render = function render() {
     var disabled = this.props.disabled;
-    return /*#__PURE__*/React__default.createElement(Row, null, /*#__PURE__*/React__default.createElement(Col, {
+    var onceUploadedCallback = this.props.onceUploaded;
+    return /*#__PURE__*/React__default.createElement("div", null, onceUploadedCallback == null && /*#__PURE__*/React__default.createElement("div", null, "Missing 'onceUploaded' props containing callback function."), onceUploadedCallback != null && /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement(Row, null, /*#__PURE__*/React__default.createElement(Col, {
       sm: 24
     }, /*#__PURE__*/React__default.createElement(Upload, {
       disabled: disabled,
@@ -7007,7 +7008,7 @@ var UploadImage = /*#__PURE__*/function (_Component) {
         width: "100%"
       },
       src: this.state.previewImage
-    }))));
+    }))))));
   };
 
   return UploadImage;
