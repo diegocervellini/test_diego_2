@@ -51,6 +51,7 @@
     "dist"
   ],
   "dependencies": {
+    "antd": "^4.6.6",
     "react-color": "^2.18.0"
   }
 }

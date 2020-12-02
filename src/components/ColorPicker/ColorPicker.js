@@ -62,20 +62,31 @@ class ColorPicker extends React.Component {
             }
         });
 
+        var onChangeCallback = this.props.onChange;
+
         return (
             <div>
-                <div style={styles.swatch} onClick={this.handleClick}>
-                    <div style={styles.color} />
+                {onChangeCallback == null &&
+                    <div>
+                        Missing 'onChange' props containing callback function.
                 </div>
-                {this.state.displayColorPicker ? (
-                    <div style={styles.popover}>
-                        <div style={styles.cover} onClick={this.handleClose} />
-                        <SketchPicker
-                            color={this.state.color}
-                            onChange={this.handleChange}
-                        />
+                }
+                {onChangeCallback != null &&
+                    <div>
+                        <div style={styles.swatch} onClick={this.handleClick}>
+                            <div style={styles.color} />
+                        </div>
+                        {this.state.displayColorPicker ? (
+                            <div style={styles.popover}>
+                                <div style={styles.cover} onClick={this.handleClose} />
+                                <SketchPicker
+                                    color={this.state.color}
+                                    onChange={this.handleChange}
+                                />
+                            </div>
+                        ) : null}
                     </div>
-                ) : null}
+                }
             </div>
         );
     }

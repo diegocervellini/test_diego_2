@@ -4509,7 +4509,8 @@ var ColorPicker = /*#__PURE__*/function (_React$Component) {
         }
       }
     });
-    return /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("div", {
+    var onChangeCallback = this.props.onChange;
+    return /*#__PURE__*/React__default.createElement("div", null, onChangeCallback == null && /*#__PURE__*/React__default.createElement("div", null, "Missing 'onChange' props containing callback function."), onChangeCallback != null && /*#__PURE__*/React__default.createElement("div", null, /*#__PURE__*/React__default.createElement("div", {
       style: styles.swatch,
       onClick: this.handleClick
     }, /*#__PURE__*/React__default.createElement("div", {
@@ -4522,7 +4523,7 @@ var ColorPicker = /*#__PURE__*/function (_React$Component) {
     }), /*#__PURE__*/React__default.createElement(reactColor.SketchPicker, {
       color: this.state.color,
       onChange: this.handleChange
-    })) : null);
+    })) : null));
   };
 
   return ColorPicker;
