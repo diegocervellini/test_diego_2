@@ -95,40 +95,52 @@ class UploadImage extends Component {
     render() {
         const { disabled } = this.props;
 
+        var onceUploadedCallback = this.props.onceUploaded;
         return (
-            <Row>
-                <Col sm={24}>
-                    <Upload
-                        disabled={disabled}
-                        accept="image/*"
-                        listType="picture-card"
-                        fileList={this.state.fileList}
-                        onRemove={this.onRemove}
-                        beforeUpload={this.beforeUpload}
-                        onChange={this.onSelectFile}
-                        onPreview={this.openModal}>
-                        {this.state.fileList.length == 0 &&
-                            <UploadOutlined />
-                        }
-                    </Upload>
+            <div>
+                {onceUploadedCallback == null &&
+                    <div>
+                        Missing 'onceUploaded' props containing callback function.
+                    </div>
+                }
+                {onceUploadedCallback != null &&
+                    <div>
+                        <Row>
+                            <Col sm={24}>
+                                <Upload
+                                    disabled={disabled}
+                                    accept="image/*"
+                                    listType="picture-card"
+                                    fileList={this.state.fileList}
+                                    onRemove={this.onRemove}
+                                    beforeUpload={this.beforeUpload}
+                                    onChange={this.onSelectFile}
+                                    onPreview={this.openModal}>
+                                    {this.state.fileList.length == 0 &&
+                                        <UploadOutlined />
+                                    }
+                                </Upload>
 
-                    <Modal
-                        title={<div style={{ color: "rgba(255, 0, 0, 0.0)" }}>Preview</div>}
-                        closeIcon={<CloseCircleOutlined style={{ fontSize: 26, color: "grey" }} />}
-                        destroyOnClose={true}
-                        visible={this.state.previewVisible}
-                        footer={null}
-                        zIndex={1050}
-                        onCancel={this.closeModal}
-                        maskClosable={false}>
-                        <img
-                            alt="category"
-                            style={{ width: "100%" }}
-                            src={this.state.previewImage}
-                        />
-                    </Modal>
-                </Col>
-            </Row>
+                                <Modal
+                                    title={<div style={{ color: "rgba(255, 0, 0, 0.0)" }}>Preview</div>}
+                                    closeIcon={<CloseCircleOutlined style={{ fontSize: 26, color: "grey" }} />}
+                                    destroyOnClose={true}
+                                    visible={this.state.previewVisible}
+                                    footer={null}
+                                    zIndex={1050}
+                                    onCancel={this.closeModal}
+                                    maskClosable={false}>
+                                    <img
+                                        alt="category"
+                                        style={{ width: "100%" }}
+                                        src={this.state.previewImage}
+                                    />
+                                </Modal>
+                            </Col>
+                        </Row>
+                    </div>
+                }
+            </div>
         )
     }
 }
