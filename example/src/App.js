@@ -1,6 +1,6 @@
 import React from 'react'
 import { Row, Col } from "antd";
-import { ColorPicker, CropImage, TextEditor } from 'test_diego_2'
+import { ColorPicker, CropImage, TextEditor, UploadImage } from 'test_diego_2'
 import 'test_diego_2/dist/index.css'
 
 const App = () => {
@@ -27,6 +27,14 @@ const App = () => {
           <div>TextEditor</div>
           <div>
             <TextEditor></TextEditor>
+          </div>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <div>UploadImage</div>
+          <div>
+            <UploadImage></UploadImage>
           </div>
         </Col>
       </Row>

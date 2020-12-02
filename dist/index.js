@@ -6380,6 +6380,21 @@ var SaveOutlined$1 = function SaveOutlined$1(props, ref) {
 SaveOutlined$1.displayName = 'SaveOutlined';
 var SaveOutlined$2 = /*#__PURE__*/React.forwardRef(SaveOutlined$1);
 
+// This icon file is generated automatically.
+var UploadOutlined = { "icon": { "tag": "svg", "attrs": { "viewBox": "64 64 896 896", "focusable": "false" }, "children": [{ "tag": "path", "attrs": { "d": "M400 317.7h73.9V656c0 4.4 3.6 8 8 8h60c4.4 0 8-3.6 8-8V317.7H624c6.7 0 10.4-7.7 6.3-12.9L518.3 163a8 8 0 00-12.6 0l-112 141.7c-4.1 5.3-.4 13 6.3 13zM878 626h-60c-4.4 0-8 3.6-8 8v154H214V634c0-4.4-3.6-8-8-8h-60c-4.4 0-8 3.6-8 8v198c0 17.7 14.3 32 32 32h684c17.7 0 32-14.3 32-32V634c0-4.4-3.6-8-8-8z" } }] }, "name": "upload", "theme": "outlined" };
+
+// GENERATE BY ./scripts/generate.ts
+
+var UploadOutlined$1 = function UploadOutlined$1(props, ref) {
+  return /*#__PURE__*/React.createElement(Icon, Object.assign({}, props, {
+    ref: ref,
+    icon: UploadOutlined
+  }));
+};
+
+UploadOutlined$1.displayName = 'UploadOutlined';
+var UploadOutlined$2 = /*#__PURE__*/React.forwardRef(UploadOutlined$1);
+
 var ImageService = /*#__PURE__*/function () {
   function ImageService() {}
 
@@ -6875,7 +6890,134 @@ var MainTextEditor = /*#__PURE__*/function (_Component) {
   return MainTextEditor;
 }(React.Component);
 
+var UploadImage = /*#__PURE__*/function (_Component) {
+  _inheritsLoose(UploadImage, _Component);
+
+  function UploadImage(props) {
+    var _this;
+
+    _this = _Component.call(this, props) || this;
+    _this.state = {
+      fileList: [],
+      previewVisible: false,
+      previewImage: null
+    };
+    _this.onRemove = _this.onRemove.bind(_assertThisInitialized(_this));
+    _this.beforeUpload = _this.beforeUpload.bind(_assertThisInitialized(_this));
+    _this.onSelectFile = _this.onSelectFile.bind(_assertThisInitialized(_this));
+    _this.openModal = _this.openModal.bind(_assertThisInitialized(_this));
+    _this.closeModal = _this.closeModal.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+
+  var _proto = UploadImage.prototype;
+
+  _proto.componentDidMount = function componentDidMount() {
+    var initialList = this.props.defaultImagesList || [];
+    this.setState({
+      fileList: initialList
+    });
+  };
+
+  _proto.componentWillReceiveProps = function componentWillReceiveProps(nextProps) {
+    if (nextProps.defaultImagesList != this.state.fileList) {
+      this.setState({
+        fileList: nextProps.defaultImagesList
+      });
+    }
+  };
+
+  _proto.onRemove = function onRemove(file) {
+    this.setState({
+      fileList: []
+    });
+  };
+
+  _proto.beforeUpload = function beforeUpload(file) {
+    this.setState({
+      fileList: [file],
+      fileListimg: [file]
+    });
+    return false;
+  };
+
+  _proto.onSelectFile = function onSelectFile(file, list, e) {
+    var self = this;
+
+    if (file && file.file && file.fileList.length > 0) {
+      var reader = new FileReader();
+      var readFile = file.file;
+      reader.addEventListener("load", function () {
+        if (self.props.onceUploaded) {
+          var base64File = reader.result;
+          self.props.onceUploaded(base64File, readFile);
+        }
+      });
+      reader.readAsDataURL(file.file);
+    }
+  };
+
+  _proto.openModal = function openModal(e) {
+    if (e && e.url) {
+      this.setState({
+        previewVisible: true,
+        previewImage: e.url
+      });
+    }
+  };
+
+  _proto.closeModal = function closeModal() {
+    this.setState({
+      previewVisible: false,
+      previewImage: null
+    });
+  };
+
+  _proto.render = function render() {
+    var disabled = this.props.disabled;
+    return /*#__PURE__*/React__default.createElement(antd.Row, null, /*#__PURE__*/React__default.createElement(antd.Col, {
+      sm: 24
+    }, /*#__PURE__*/React__default.createElement(antd.Upload, {
+      disabled: disabled,
+      accept: "image/*",
+      listType: "picture-card",
+      fileList: this.state.fileList,
+      onRemove: this.onRemove,
+      beforeUpload: this.beforeUpload,
+      onChange: this.onSelectFile,
+      onPreview: this.openModal
+    }, this.state.fileList.length == 0 && /*#__PURE__*/React__default.createElement(UploadOutlined$2, null)), /*#__PURE__*/React__default.createElement(antd.Modal, {
+      title: /*#__PURE__*/React__default.createElement("div", {
+        style: {
+          color: "rgba(255, 0, 0, 0.0)"
+        }
+      }, "Preview"),
+      closeIcon: /*#__PURE__*/React__default.createElement(CloseCircleOutlined$2, {
+        style: {
+          fontSize: 26,
+          color: "grey"
+        }
+      }),
+      destroyOnClose: true,
+      visible: this.state.previewVisible,
+      footer: null,
+      zIndex: 1050,
+      onCancel: this.closeModal,
+      maskClosable: false
+    }, /*#__PURE__*/React__default.createElement("img", {
+      alt: "category",
+      style: {
+        width: "100%"
+      },
+      src: this.state.previewImage
+    }))));
+  };
+
+  return UploadImage;
+}(React.Component);
+
 exports.ColorPicker = ColorPicker;
 exports.CropImage = CropImage;
 exports.TextEditor = MainTextEditor;
+exports.UploadImage = UploadImage;
 //# sourceMappingURL=index.js.map
