@@ -1,7 +1,6 @@
-import React, { Component } from "react";
-import styles from './styles.module.css'
 import ColorPicker from './components/ColorPicker/ColorPicker'
+import CropImage from './components/CropImage/CropImage'
 
 
 
-export { ColorPicker }
+export { ColorPicker, CropImage }

@@ -8,11 +8,12 @@
  * Date: 2020-09-10T13:16:21.689Z
  */
 
-._3jprO {
+.cropper-container {
   direction: ltr;
   font-size: 0;
   line-height: 0;
   position: relative;
+  -ms-touch-action: none;
   touch-action: none;
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -20,7 +21,7 @@
   user-select: none;
 }
 
-._3jprO img {
+.cropper-container img {
   display: block;
   height: 100%;
   image-orientation: 0deg;
@@ -31,11 +32,11 @@
   width: 100%;
 }
 
-._TiEt4,
-._1b4TH,
-._3LK25,
-._3sgUS,
-._32f1g {
+.cropper-wrap-box,
+.cropper-canvas,
+.cropper-drag-box,
+.cropper-crop-box,
+.cropper-modal {
   bottom: 0;
   left: 0;
   position: absolute;
@@ -43,22 +44,22 @@
   top: 0;
 }
 
-._TiEt4,
-._1b4TH {
+.cropper-wrap-box,
+.cropper-canvas {
   overflow: hidden;
 }
 
-._3LK25 {
+.cropper-drag-box {
   background-color: #fff;
   opacity: 0;
 }
 
-._32f1g {
+.cropper-modal {
   background-color: #000;
   opacity: 0.5;
 }
 
-._2hqeL {
+.cropper-view-box {
   display: block;
   height: 100%;
   outline: 1px solid #39f;
@@ -67,14 +68,14 @@
   width: 100%;
 }
 
-._2fkwC {
+.cropper-dashed {
   border: 0 dashed #eee;
   display: block;
   opacity: 0.5;
   position: absolute;
 }
 
-._2fkwC._4timi {
+.cropper-dashed.dashed-h {
   border-bottom-width: 1px;
   border-top-width: 1px;
   height: calc(100% / 3);
@@ -83,7 +84,7 @@
   width: 100%;
 }
 
-._2fkwC._3R47D {
+.cropper-dashed.dashed-v {
   border-left-width: 1px;
   border-right-width: 1px;
   height: 100%;
@@ -92,7 +93,7 @@
   width: calc(100% / 3);
 }
 
-._2kNXo {
+.cropper-center {
   display: block;
   height: 0;
   left: 50%;
@@ -102,31 +103,31 @@
   width: 0;
 }
 
-._2kNXo::before,
-._2kNXo::after {
+.cropper-center::before,
+.cropper-center::after {
   background-color: #eee;
   content: ' ';
   display: block;
   position: absolute;
 }
 
-._2kNXo::before {
+.cropper-center::before {
   height: 1px;
   left: -3px;
   top: 0;
   width: 7px;
 }
 
-._2kNXo::after {
+.cropper-center::after {
   height: 7px;
   left: 0;
   top: -3px;
   width: 1px;
 }
 
-._MRSrH,
-._2MFTj,
-._1KFb8 {
+.cropper-face,
+.cropper-line,
+.cropper-point {
   display: block;
   height: 100%;
   opacity: 0.1;
@@ -134,98 +135,98 @@
   width: 100%;
 }
 
-._MRSrH {
+.cropper-face {
   background-color: #fff;
   left: 0;
   top: 0;
 }
 
-._2MFTj {
+.cropper-line {
   background-color: #39f;
 }
 
-._2MFTj._3T5-3 {
+.cropper-line.line-e {
   cursor: ew-resize;
   right: -3px;
   top: 0;
   width: 5px;
 }
 
-._2MFTj._1yx0e {
+.cropper-line.line-n {
   cursor: ns-resize;
   height: 5px;
   left: 0;
   top: -3px;
 }
 
-._2MFTj._H032O {
+.cropper-line.line-w {
   cursor: ew-resize;
   left: -3px;
   top: 0;
   width: 5px;
 }
 
-._2MFTj._2EiLW {
+.cropper-line.line-s {
   bottom: -3px;
   cursor: ns-resize;
   height: 5px;
   left: 0;
 }
 
-._1KFb8 {
+.cropper-point {
   background-color: #39f;
   height: 5px;
   opacity: 0.75;
   width: 5px;
 }
 
-._1KFb8._3QXkj {
+.cropper-point.point-e {
   cursor: ew-resize;
   margin-top: -3px;
   right: -3px;
   top: 50%;
 }
 
-._1KFb8._3aha1 {
+.cropper-point.point-n {
   cursor: ns-resize;
   left: 50%;
   margin-left: -3px;
   top: -3px;
 }
 
-._1KFb8._199OF {
+.cropper-point.point-w {
   cursor: ew-resize;
   left: -3px;
   margin-top: -3px;
   top: 50%;
 }
 
-._1KFb8._1nAOV {
+.cropper-point.point-s {
   bottom: -3px;
   cursor: s-resize;
   left: 50%;
   margin-left: -3px;
 }
 
-._1KFb8._1Upi7 {
+.cropper-point.point-ne {
   cursor: nesw-resize;
   right: -3px;
   top: -3px;
 }
 
-._1KFb8._3qiUe {
+.cropper-point.point-nw {
   cursor: nwse-resize;
   left: -3px;
   top: -3px;
 }
 
-._1KFb8._1SOmp {
+.cropper-point.point-sw {
   bottom: -3px;
   cursor: nesw-resize;
   left: -3px;
 }
 
-._1KFb8._2l1Au {
+.cropper-point.point-se {
   bottom: -3px;
   cursor: nwse-resize;
   height: 20px;
@@ -235,28 +236,28 @@
 }
 
 @media (min-width: 768px) {
-  ._1KFb8._2l1Au {
+  .cropper-point.point-se {
     height: 15px;
     width: 15px;
   }
 }
 
 @media (min-width: 992px) {
-  ._1KFb8._2l1Au {
+  .cropper-point.point-se {
     height: 10px;
     width: 10px;
   }
 }
 
 @media (min-width: 1200px) {
-  ._1KFb8._2l1Au {
+  .cropper-point.point-se {
     height: 5px;
     opacity: 0.75;
     width: 5px;
   }
 }
 
-._1KFb8._2l1Au::before {
+.cropper-point.point-se::before {
   background-color: #39f;
   bottom: -50%;
   content: ' ';
@@ -268,36 +269,36 @@
   width: 200%;
 }
 
-._Mokos {
+.cropper-invisible {
   opacity: 0;
 }
 
-._Cxiqa {
+.cropper-bg {
   background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQAQMAAAAlPW0iAAAAA3NCSVQICAjb4U/gAAAABlBMVEXMzMz////TjRV2AAAACXBIWXMAAArrAAAK6wGCiw1aAAAAHHRFWHRTb2Z0d2FyZQBBZG9iZSBGaXJld29ya3MgQ1M26LyyjAAAABFJREFUCJlj+M/AgBVhF/0PAH6/D/HkDxOGAAAAAElFTkSuQmCC');
 }
 
-._2t3J6 {
+.cropper-hide {
   display: block;
   height: 0;
   position: absolute;
   width: 0;
 }
 
-._3EMgZ {
+.cropper-hidden {
   display: none !important;
 }
 
-._mvMZ4 {
+.cropper-move {
   cursor: move;
 }
 
-._2oW69 {
+.cropper-crop {
   cursor: crosshair;
 }
 
-._h0GOT ._3LK25,
-._h0GOT ._MRSrH,
-._h0GOT ._2MFTj,
-._h0GOT ._1KFb8 {
+.cropper-disabled .cropper-drag-box,
+.cropper-disabled .cropper-face,
+.cropper-disabled .cropper-line,
+.cropper-disabled .cropper-point {
   cursor: not-allowed;
 }
