@@ -1,30 +1,7 @@
 import React, { Component } from "react";
 import styles from './styles.module.css'
+import ColorPicker from './components/ColorPicker'
 
-export const ExampleComponent = ({ text }) => {
-  return <div className={styles.test}>Example Component: {text}</div>
-}
 
-export class Pippo extends Component {
-  constructor() {
-    super();
 
-    this.state = {
-      text: "TEXT DEFAULT!!"
-    }
-  }
-
-  componentDidMount() {
-    this.setState({
-      text: this.props.text || this.state.text
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        {this.state.text}
-      </div>
-    )
-  }
-}
+export { ColorPicker }
