@@ -1,9 +1,10 @@
-import ColorPicker from './components/ColorPicker/ColorPicker'
-import CropImage from './components/CropImage/CropImage'
-import TextEditor from './components/TextEditor/TextEditor'
-import UploadImage from './components/UploadImage/UploadImage'
+// import ColorPicker from './components/ColorPicker/ColorPicker'
+// import CropImage from './components/CropImage/CropImage'
+// import TextEditor from './components/TextEditor/TextEditor'
+// import UploadImage from './components/UploadImage/UploadImage'
+import Tooltip from './components/Tooltip/Tooltip'
 
 
 
 
-export { ColorPicker, CropImage, TextEditor, UploadImage }
+export { Tooltip }
