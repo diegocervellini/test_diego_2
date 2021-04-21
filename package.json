@@ -52,6 +52,10 @@
   ],
   "dependencies": {
     "react": "^16.12.0",
-    "react-bootstrap": "^1.5.2"
+    "react-bootstrap": "^1.5.2",
+    "lodash": "^4.17.21",
+    "moment": "^2.24.0",
+    "@syncfusion/ej2-react-calendars": "^18.1.44",
+    "@syncfusion/ej2-react-schedule": "^18.4.45"
   }
 }
