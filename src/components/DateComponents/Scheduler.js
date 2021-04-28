@@ -1,9 +1,10 @@
 /** @format */
 
 import React, { Component } from "react";
-import { Row, Col } from "react-bootstrap";
-import { ScheduleComponent, Month, Inject, ViewDirective, ViewsDirective } from "@syncfusion/ej2-react-schedule";
-
+import {
+  ScheduleComponent, Inject, ViewDirective, ViewsDirective,
+  Day, Week, WorkWeek, Month, Agenda,
+} from "@syncfusion/ej2-react-schedule";
 import moment from "moment";
 
 import "./css/buttons/material_custom.css";
@@ -13,64 +14,53 @@ import "./css/schedule/material_custom.css";
 const _ = require("lodash");
 const date_format = "DD/MM/YYYY";
 
-class ReservationScheduler extends Component {
-  constructor(props) {
-    super(props);
+export class ReservationScheduler extends Component {
+  constructor() {
+    super(...arguments);
     this.state = {
       closedDates: this.props.closedDates ? this.props.closedDates : [],
-    };
+      dataSource: { dataSource: this.props.events || [] }
+    }
     this.scheduleObj = null;
     this.selectedDate = moment().format(date_format);
 
     this.checkSelectedDate = this.checkSelectedDate.bind(this);
     this.checkClosedDate = this.checkClosedDate.bind(this);
+
   }
 
-  /*************************************************************************/
-  /************************ STANDARD ***************************************/
-  /*************************************************************************/
+  componentDidMount() {
+
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (nextProps.closedDates && nextProps.closedDates.toString() !== this.state.closedDates.toString()) {
+    var { closedDates, currentView, events } = nextProps;
+
+    if (this.scheduleObj != null) {
+      if (closedDates && closedDates.toString() !== this.state.closedDates.toString()) {
+        this.setState({
+          closedDates: closedDates,
+        }, () => {
+          this.scheduleObj.refresh();
+        });
+      }
+
+      if (currentView != null) {
+        this.scheduleObj.changeCurrentView(currentView)
+      }
+
+      var new_events = events || [];
+      var dataSource = { dataSource: new_events };
       this.setState({
-        closedDates: nextProps.closedDates,
-      }, () => {
-        this.scheduleObj.refresh();
-      });
-    }
-  }
-
-  /*************************************************************************/
-  /************************** RENDER ***************************************/
-  /*************************************************************************/
-  parseClosedDates(closedDates) {
-    let closed_day = closedDates.length
-      ? _.map(this.state.closedDates, function (el) {
-        let se = new Date(el);
-        let s = new Date(
-          se.getFullYear(),
-          se.getMonth(),
-          se.getDate()
-        ).getTime();
-        return s;
+        dataSource: dataSource
       })
-      : [];
-    return closed_day;
-  }
-
-
-  /*************************************************************************/
-  /************************** RENDER ***************************************/
-  /*************************************************************************/
-  checkClosedDate(args) {
-    var closed_day = this.parseClosedDates(this.state.closedDates);
-    var date = new Date(args.date.getFullYear(), args.date.getMonth(), args.date.getDate()).getTime();
-
-    if (args.elementType == "monthCells" && closed_day.indexOf(date) > -1) {
-      // args.element.setAttribute("style", "background-color:#f54842");
-      args.element.classList.add("e-current-date");
     }
   }
 
+
+  /*************************************************************************/
+  /************************** RENDER CELL **********************************/
+  /*************************************************************************/
   checkSelectedDate(args) {
     var selected_date = moment(this.selectedDate, date_format).format(date_format);
 
@@ -93,6 +83,36 @@ class ReservationScheduler extends Component {
     }
   }
 
+  parseClosedDates(closedDates) {
+    let closed_day = closedDates.length
+      ? _.map(this.state.closedDates, function (el) {
+        let se = new Date(el);
+        let s = new Date(
+          se.getFullYear(),
+          se.getMonth(),
+          se.getDate()
+        ).getTime();
+        return s;
+      })
+      : [];
+    return closed_day;
+  }
+
+  checkClosedDate(args) {
+    var closed_day = this.parseClosedDates(this.state.closedDates);
+    if (args.date) {
+      var date = new Date(args.date.getFullYear(), args.date.getMonth(), args.date.getDate()).getTime();
+
+      if (args.elementType == "monthCells" && closed_day.indexOf(date) > -1) {
+        args.element.classList.add("e-current-date");
+      }
+    }
+  }
+
+
+  /*************************************************************************/
+  /************************** RENDER ***************************************/
+  /*************************************************************************/
   render() {
     var self = this;
 
@@ -157,26 +177,33 @@ class ReservationScheduler extends Component {
           self.props.onChangeDate(moment());
         }
       }
+
+      if (props.action == "view" && self.props.onChangeView) {
+        var currentView = props.currentView;
+        self.props.onChangeView(currentView);
+      }
     }
 
     return (
-      <Row>
-        <Col>
-          <ScheduleComponent
-            height="450px"
-            ref={(schedule) => (this.scheduleObj = schedule)}
-            renderCell={renderCell}
-            cellClick={cellClick}
-            popupOpen={popupOpen}
-            actionComplete={actionComplete}
-            navigating={navigating}>
-            <ViewsDirective>
-              <ViewDirective option="Month" />
-            </ViewsDirective>
-            <Inject services={[Month]} />
-          </ScheduleComponent>
-        </Col>
-      </Row>
+      <ScheduleComponent
+        ref={schedule => this.scheduleObj = schedule}
+        height={this.props.height}
+        editorTemplate={() => { return <div></div> }}
+        eventSettings={this.state.dataSource}
+        renderCell={renderCell}
+        cellClick={cellClick}
+        popupOpen={popupOpen}
+        actionComplete={actionComplete}
+        navigating={navigating}>
+        <ViewsDirective>
+          {this.props.dayView == true && <ViewDirective option='Day' />}
+          {this.props.weekView == true && <ViewDirective option='Week' />}
+          {this.props.workWeekView == true && <ViewDirective option='WorkWeek' />}
+          {this.props.monthView == true && <ViewDirective option="Month" />}
+          {this.props.agendaView == true && <ViewDirective option="Agenda" />}
+        </ViewsDirective>
+        <Inject services={[Day, Week, WorkWeek, Month, Agenda]} />
+      </ScheduleComponent>
     );
   }
 }
